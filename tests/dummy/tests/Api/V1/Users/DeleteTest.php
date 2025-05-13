@@ -14,36 +14,36 @@ namespace App\Tests\Api\V1\Users;
 use App\Models\User;
 use App\Tests\Api\V1\TestCase;
 
-class ReadTest extends TestCase
+class DeleteTest extends TestCase
 {
-
     public function test(): void
     {
         $user = User::factory()->createOne();
 
-        $expected = $this->serializer
-            ->user($user);
-
         $response = $this
             ->actingAs(User::factory()->createOne())
             ->jsonApi('users')
-            ->get(url('/api/v1/users', $expected['id']));
+            ->delete(url('/api/v1/users', $user));
 
-        $response->assertFetchedOneExact($expected);
+        $response->assertNotFound()->assertErrorStatus([
+            'detail' => 'not found message',
+            'status' => '404',
+            'title' => 'Not Found',
+        ]);
     }
 
-    public function testMe(): void
+    public function testUnauthenticated(): void
     {
         $user = User::factory()->createOne();
 
-        $expected = $this->serializer
-            ->user($user);
-
         $response = $this
-            ->actingAs($user)
             ->jsonApi('users')
-            ->get(url('/api/v1/users/me'));
+            ->delete(url('/api/v1/users', $user));
 
-        $response->assertFetchedOneExact($expected);
+        $response->assertNotFound()->assertErrorStatus([
+                'detail' => 'not found message',
+                'status' => '404',
+                'title' => 'Not Found',
+            ]);
     }
 }

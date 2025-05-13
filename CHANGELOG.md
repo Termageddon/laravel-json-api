@@ -3,6 +3,99 @@
 All notable changes to this project will be documented in this file. This project adheres to
 [Semantic Versioning](http://semver.org/) and [this changelog format](http://keepachangelog.com/).
 
+## Unreleased
+
+## [5.1.0] - 2025-02-24
+
+### Added
+
+- Package now supports Laravel 12.
+
+## [5.0.2] - 2025-12-03
+
+### Fixed
+
+- [#302](https://github.com/laravel-json-api/laravel/pull/302) Ensure auth response is used when deleting a resource
+  that does not have a resource response class.
+
+## [5.0.1] - 2025-12-02
+
+### Fixed
+
+- [#301](https://github.com/laravel-json-api/laravel/pull/301) Do not override response status when authorization
+  exception is thrown.
+
+## [5.0.0] - 2025-12-01
+
+### Changed
+
+- [#298](https://github.com/laravel-json-api/laravel/pull/298)
+  and [#70](https://github.com/laravel-json-api/laravel/issues/70) The authorizer implementation now allows methods to
+  return either `bool` or an Illuminate Auth `Response`.
+- **BREAKING** The return type for the `authorizeResource()` method on both resource and query request classes has
+  changed to `bool|Response` (where response is the Illuminate Auth response). If you are manually calling this method
+  and relying on the return value being a boolean, this change is breaking. However, the vast majority of applications
+  should be able to upgrade without any changes.
+
+## [4.1.1] - 2024-11-30
+
+### Fixed
+
+- Remove deprecation notices in PHP 8.4.
+
+## [4.1.0] - 2024-06-26
+
+### Fixed
+
+- [core#17](https://github.com/laravel-json-api/core/pull/17) Fix incorrect `self` link in related resource responses,
+  and remove `related` link that should not exist. This has been incorrect for some time, but is definitely what
+  the [spec defines here.](https://jsonapi.org/format/1.0/#document-top-level)
+- [eloquent#36](https://github.com/laravel-json-api/eloquent/pull/36) Support Eloquent dynamic relationships.
+
+## [4.0.0] - 2024-03-14
+
+### Changed
+
+- Package is now licensed under the MIT License.
+- **BREAKING** Package now requires Laravel 11.
+- Minimum PHP version is now `8.2`.
+
+## [3.4.0] - 2024-03-03
+
+### Added
+
+- [#272](https://github.com/laravel-json-api/laravel/pull/272) Added a model property type-hint to the resource stub and
+  allowed it to be replaced via a model option on the command.
+
+## [3.3.0] - 2024-02-14
+
+### Added
+
+- [#265](https://github.com/laravel-json-api/laravel/issues/265) Allow registration of middleware per action on both
+  resource routes and relationship routes.
+
+## [3.2.0] - 2023-11-08
+
+### Added
+
+- Exceptions converted to JSON:API errors when debug mode is on now include all previous exceptions.
+
+### Changed
+
+- Registering routes no longer results in the server instance being thread-cached. This more accurately reflects
+  production environments, where routes would be cached so there would be no thread-cached JSON:API server when handling
+  a HTTP request. This means tests (and development environments where routes are not cached) more accurately behave in
+  the same way as production environments.
+- Exceptions thrown during the encoding process are no longer caught and re-thrown as previous exceptions. This is due
+  to the number of questions we receive from developers who do not check previous exceptions, despite exception messages
+  stating that there is a previous exception to look at.
+
+## [3.1.0] - 2023-07-20
+
+### Added
+
+- [core#12](https://github.com/laravel-json-api/core/pull/12) Add `ulid()` method to the `ID` field class.
+
 ## [3.0.0] - 2023-02-14
 
 ### Changed

@@ -1,24 +1,18 @@
 <?php
 /*
- * Copyright 2023 Cloud Creativity Limited
+ * Copyright 2024 Cloud Creativity Limited
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Use of this source code is governed by an MIT-style
+ * license that can be found in the LICENSE file or at
+ * https://opensource.org/licenses/MIT.
  */
 
 declare(strict_types=1);
 
 namespace LaravelJsonApi\Laravel\Http\Requests;
 
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Http\FormRequest as BaseFormRequest;
@@ -234,29 +228,48 @@ class FormRequest extends BaseFormRequest
      */
     protected function passesAuthorization()
     {
-        /**
-         * If the developer has implemented the `authorize` method, we
-         * will return the result if it is a boolean. This allows
-         * the developer to return a null value to indicate they want
-         * the default authorization to run.
-         */
-        if (method_exists($this, 'authorize')) {
-            if (is_bool($passes = $this->container->call([$this, 'authorize']))) {
-                return $passes;
+        try {
+            /**
+             * If the developer has implemented the `authorize` method, we
+             * will return the result if it is a boolean. This allows
+             * the developer to return a null value to indicate they want
+             * the default authorization to run.
+             */
+            if (method_exists($this, 'authorize')) {
+                $result = $this->container->call([$this, 'authorize']);
+                if ($result !== null) {
+                    return $result instanceof Response ? $result->authorize() : $result;
+                }
             }
-        }
 
-        /**
-         * If the developer has not authorized the request themselves,
-         * we run our default authorization as long as authorization is
-         * enabled for both the server and the schema (checked via the
-         * `mustAuthorize()` method).
-         */
-        if (method_exists($this, 'authorizeResource')) {
-            return $this->container->call([$this, 'authorizeResource']);
-        }
+            /**
+             * If the developer has not authorized the request themselves,
+             * we run our default authorization as long as authorization is
+             * enabled for both the server and the schema (checked via the
+             * `mustAuthorize()` method).
+             */
+            if (method_exists($this, 'authorizeResource')) {
+                $result = $this->container->call([$this, 'authorizeResource']);
+                return $result instanceof Response ? $result->authorize() : $result;
+            }
 
+        } catch (AuthorizationException $ex) {
+            if (!$ex->hasStatus()) {
+                $this->failIfUnauthenticated();
+            }
+            throw $ex;
+        }
         return true;
+    }
+
+    protected function failIfUnauthenticated()
+    {
+         /** @var Guard $auth */
+        $auth = $this->container->make(Guard::class);
+
+        if ($auth->guest()) {
+            throw new AuthenticationException();
+        }
     }
 
     /**
@@ -264,12 +277,7 @@ class FormRequest extends BaseFormRequest
      */
     protected function failedAuthorization()
     {
-        /** @var Guard $auth */
-        $auth = $this->container->make(Guard::class);
-
-        if ($auth->guest()) {
-            throw new AuthenticationException();
-        }
+        $this->failIfUnauthenticated();
 
         parent::failedAuthorization();
     }
