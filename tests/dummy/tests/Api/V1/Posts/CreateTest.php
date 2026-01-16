@@ -17,6 +17,7 @@ use App\Models\Tag;
 use App\Models\Video;
 use App\Tests\Api\V1\TestCase;
 use LaravelJsonApi\Core\Document\ResourceObject;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class CreateTest extends TestCase
 {
@@ -154,10 +155,10 @@ class CreateTest extends TestCase
         $this->assertDatabaseCount('posts', 0);
     }
 
+    #[DataProvider('notAcceptableMediaTypeProvider')]
     /**
      * @param string $mediaType
      * @return void
-     * @dataProvider notAcceptableMediaTypeProvider
      */
     public function testNotAcceptableMediaType(string $mediaType): void
     {

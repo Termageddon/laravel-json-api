@@ -17,6 +17,7 @@ use App\Models\Tag;
 use App\Models\User;
 use App\Tests\Api\V1\TestCase;
 use Illuminate\Database\Eloquent\Collection;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class UpdateTagsTest extends TestCase
 {
@@ -141,10 +142,10 @@ class UpdateTagsTest extends TestCase
         $this->assertDatabaseCount('taggables', 2);
     }
 
+    #[DataProvider('notAcceptableMediaTypeProvider')]
     /**
      * @param string $mediaType
      * @return void
-     * @dataProvider notAcceptableMediaTypeProvider
      */
     public function testNotAcceptableMediaType(string $mediaType): void
     {

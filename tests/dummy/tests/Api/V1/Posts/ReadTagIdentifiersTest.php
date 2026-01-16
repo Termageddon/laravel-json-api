@@ -14,6 +14,7 @@ namespace App\Tests\Api\V1\Posts;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Tests\Api\V1\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ReadTagIdentifiersTest extends TestCase
 {
@@ -69,10 +70,10 @@ class ReadTagIdentifiersTest extends TestCase
         $response->assertFetchedToManyInOrder($expected);
     }
 
+    #[DataProvider('notAcceptableMediaTypeProvider')]
     /**
      * @param string $mediaType
      * @return void
-     * @dataProvider notAcceptableMediaTypeProvider
      */
     public function testNotAcceptableMediaType(string $mediaType): void
     {

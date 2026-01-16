@@ -15,7 +15,10 @@ use App\Http\Controllers\Api\V1\PostController;
 use Illuminate\Contracts\Routing\Registrar;
 use Illuminate\Support\Facades\Route;
 use LaravelJsonApi\Laravel\Facades\JsonApiRoute;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
 
+#[AllowMockObjectsWithoutExpectations]
 class ActionsTest extends TestCase
 {
 
@@ -34,9 +37,9 @@ class ActionsTest extends TestCase
         ];
     }
 
+    #[DataProvider('methodProvider')]
     /**
      * @param string $method
-     * @dataProvider methodProvider
      */
     public function testBase(string $method): void
     {
@@ -65,9 +68,9 @@ class ActionsTest extends TestCase
         $this->assertArrayNotHasKey('post', $route->wheres);
     }
 
+    #[DataProvider('methodProvider')]
     /**
      * @param string $method
-     * @dataProvider methodProvider
      */
     public function testBaseWithPrefix(string $method): void
     {
@@ -95,9 +98,9 @@ class ActionsTest extends TestCase
         $this->assertArrayNotHasKey('post', $route->wheres);
     }
 
+    #[DataProvider('methodProvider')]
     /**
      * @param string $method
-     * @dataProvider methodProvider
      */
     public function testBaseWithName(string $method): void
     {
@@ -125,9 +128,9 @@ class ActionsTest extends TestCase
         $this->assertArrayNotHasKey('post', $route->wheres);
     }
 
+    #[DataProvider('methodProvider')]
     /**
      * @param string $method
-     * @dataProvider methodProvider
      */
     public function testId(string $method): void
     {
@@ -155,9 +158,9 @@ class ActionsTest extends TestCase
         $this->assertSame('\d+', $route->wheres['post'] ?? null);
     }
 
+    #[DataProvider('methodProvider')]
     /**
      * @param string $method
-     * @dataProvider methodProvider
      */
     public function testIdWithPrefix(string $method): void
     {
@@ -185,9 +188,9 @@ class ActionsTest extends TestCase
         $this->assertSame('\d+', $route->wheres['post'] ?? null);
     }
 
+    #[DataProvider('methodProvider')]
     /**
      * @param string $method
-     * @dataProvider methodProvider
      */
     public function testIdWithName(string $method): void
     {
@@ -215,9 +218,9 @@ class ActionsTest extends TestCase
         $this->assertSame('\d+', $route->wheres['post'] ?? null);
     }
 
+    #[DataProvider('methodProvider')]
     /**
      * @param string $method
-     * @dataProvider methodProvider
      */
     public function testIdConstraintWorks(string $method): void
     {

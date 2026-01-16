@@ -17,6 +17,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Video;
 use App\Tests\Api\V1\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class AttachMediaTest extends TestCase
 {
@@ -158,10 +159,10 @@ class AttachMediaTest extends TestCase
         $this->assertDatabaseCount('post_video', 1);
     }
 
+    #[DataProvider('notAcceptableMediaTypeProvider')]
     /**
      * @param string $mediaType
      * @return void
-     * @dataProvider notAcceptableMediaTypeProvider
      */
     public function testNotAcceptableMediaType(string $mediaType): void
     {

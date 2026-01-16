@@ -15,6 +15,7 @@ use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 use App\Tests\Api\V1\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class DeleteTest extends TestCase
 {
@@ -95,10 +96,10 @@ class DeleteTest extends TestCase
         ]);
     }
 
+    #[DataProvider('notAcceptableMediaTypeProvider')]
     /**
      * @param string $mediaType
      * @return void
-     * @dataProvider notAcceptableMediaTypeProvider
      */
     public function testNotAcceptableMediaType(string $mediaType): void
     {

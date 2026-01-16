@@ -14,6 +14,7 @@ namespace App\Tests\Api\V1\Posts;
 use App\Models\Post;
 use App\Models\User;
 use App\Tests\Api\V1\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ReadAuthorIdentifierTest extends TestCase
 {
@@ -129,10 +130,10 @@ class ReadAuthorIdentifierTest extends TestCase
         );
     }
 
+    #[DataProvider('notAcceptableMediaTypeProvider')]
     /**
      * @param string $mediaType
      * @return void
-     * @dataProvider notAcceptableMediaTypeProvider
      */
     public function testNotAcceptableMediaType(string $mediaType): void
     {

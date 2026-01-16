@@ -16,6 +16,7 @@ use App\Models\Post;
 use App\Models\Tag;
 use App\Models\Video;
 use App\Tests\Api\V1\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ReadMediaTest extends TestCase
 {
@@ -160,10 +161,10 @@ class ReadMediaTest extends TestCase
         $response->assertFetchedManyExact($expected);
     }
 
+    #[DataProvider('notAcceptableMediaTypeProvider')]
     /**
      * @param string $mediaType
      * @return void
-     * @dataProvider notAcceptableMediaTypeProvider
      */
     public function testNotAcceptableMediaType(string $mediaType): void
     {

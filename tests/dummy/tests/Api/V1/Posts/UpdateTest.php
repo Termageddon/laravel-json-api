@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Tests\Api\V1\TestCase;
 use Illuminate\Support\Facades\Date;
 use LaravelJsonApi\Core\Document\ResourceObject;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class UpdateTest extends TestCase
 {
@@ -92,9 +93,9 @@ class UpdateTest extends TestCase
         ];
     }
 
+    #[DataProvider('fieldProvider')]
     /**
      * @param string $fieldName
-     * @dataProvider fieldProvider
      */
     public function testIndividualField(string $fieldName): void
     {
@@ -236,10 +237,10 @@ class UpdateTest extends TestCase
         $response->assertStatus(403);
     }
 
+    #[DataProvider('notAcceptableMediaTypeProvider')]
     /**
      * @param string $mediaType
      * @return void
-     * @dataProvider notAcceptableMediaTypeProvider
      */
     public function testNotAcceptableMediaType(string $mediaType): void
     {

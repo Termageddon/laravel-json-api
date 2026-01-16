@@ -19,6 +19,7 @@ use LaravelJsonApi\Laravel\Facades\JsonApiRoute;
 use LaravelJsonApi\Laravel\Http\Controllers\JsonApiController;
 use LaravelJsonApi\Laravel\Tests\Acceptance\TestCase;
 use function url;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ToOneLinksTest extends TestCase
 {
@@ -89,10 +90,10 @@ class ToOneLinksTest extends TestCase
         ];
     }
 
+    #[DataProvider('relationshipProvider')]
     /**
      * @param Closure $scenario
      * @return void
-     * @dataProvider relationshipProvider
      */
     public function testRelationship(Closure $scenario): void
     {
@@ -151,10 +152,10 @@ class ToOneLinksTest extends TestCase
         ];
     }
 
+    #[DataProvider('relatedProvider')]
     /**
      * @param Closure $scenario
      * @return void
-     * @dataProvider relatedProvider
      */
     public function testRelated(Closure $scenario): void
     {

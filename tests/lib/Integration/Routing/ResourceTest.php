@@ -16,7 +16,10 @@ use Illuminate\Contracts\Routing\Registrar;
 use LaravelJsonApi\Core\Support\Arr;
 use LaravelJsonApi\Laravel\Facades\JsonApiRoute;
 use LaravelJsonApi\Laravel\Routing\ResourceRegistrar;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
 
+#[AllowMockObjectsWithoutExpectations]
 class ResourceTest extends TestCase
 {
 
@@ -34,12 +37,12 @@ class ResourceTest extends TestCase
         ];
     }
 
+    #[DataProvider('routeProvider')]
     /**
      * @param string $method
      * @param string $uri
      * @param string $action
      * @param bool $id
-     * @dataProvider routeProvider
      */
     public function test(string $method, string $uri, string $action, bool $id): void
     {
@@ -68,12 +71,12 @@ class ResourceTest extends TestCase
         }
     }
 
+    #[DataProvider('routeProvider')]
     /**
      * @param string $method
      * @param string $uri
      * @param string $action
      * @param bool $id
-     * @dataProvider routeProvider
      */
     public function testController(string $method, string $uri, string $action, bool $id): void
     {
@@ -93,12 +96,12 @@ class ResourceTest extends TestCase
         );
     }
 
+    #[DataProvider('routeProvider')]
     /**
      * @param string $method
      * @param string $uri
      * @param string $action
      * @param bool $id
-     * @dataProvider routeProvider
      */
     public function testControllerFqn(string $method, string $uri, string $action, bool $id): void
     {
@@ -118,12 +121,12 @@ class ResourceTest extends TestCase
         );
     }
 
+    #[DataProvider('routeProvider')]
     /**
      * @param string $method
      * @param string $uri
      * @param string $action
      * @param bool $id
-     * @dataProvider routeProvider
      */
     public function testDomain(string $method, string $uri, string $action, bool $id): void
     {
@@ -147,13 +150,14 @@ class ResourceTest extends TestCase
         );
     }
 
+    #[DataProvider('routeProvider')]
     /**
      * @param string $method
      * @param string $uri
      * @param string $action
-     * @dataProvider routeProvider
+     * @param bool $id
      */
-    public function testServerName(string $method, string $uri, string $action): void
+    public function testServerName(string $method, string $uri, string $action, bool $id): void
     {
         $server = $this->createServer('v1');
         $this->createSchema($server, 'posts', '\d+');
@@ -172,13 +176,14 @@ class ResourceTest extends TestCase
         $this->assertSame("foobar:posts.{$action}", $route->getName());
     }
 
+    #[DataProvider('routeProvider')]
     /**
      * @param string $method
      * @param string $uri
      * @param string $action
-     * @dataProvider routeProvider
+     * @param bool $id
      */
-    public function testResourceName(string $method, string $uri, string $action): void
+    public function testResourceName(string $method, string $uri, string $action, bool $id): void
     {
         $server = $this->createServer('v1');
         $this->createSchema($server, 'posts', '\d+');
@@ -196,12 +201,14 @@ class ResourceTest extends TestCase
         $this->assertSame("v1.my-posts.foobar", $route->getName());
     }
 
+    #[DataProvider('routeProvider')]
     /**
      * @param string $method
      * @param string $uri
-     * @dataProvider routeProvider
+     * @param string $action
+     * @param bool $id
      */
-    public function testServerMiddleware(string $method, string $uri): void
+    public function testServerMiddleware(string $method, string $uri, string $action, bool $id): void
     {
         $server = $this->createServer('v1');
         $this->createSchema($server, 'posts', '\d+');
@@ -220,12 +227,14 @@ class ResourceTest extends TestCase
         $this->assertSame(['api', 'jsonapi:v1', 'foo', 'bar'], $route->action['middleware']);
     }
 
+    #[DataProvider('routeProvider')]
     /**
      * @param string $method
      * @param string $uri
-     * @dataProvider routeProvider
+     * @param string $action
+     * @param bool $id
      */
-    public function testResourceMiddleware(string $method, string $uri): void
+    public function testResourceMiddleware(string $method, string $uri, string $action, bool $id): void
     {
         $server = $this->createServer('v1');
         $this->createSchema($server, 'posts', '\d+');
@@ -244,12 +253,14 @@ class ResourceTest extends TestCase
         $this->assertSame(['api', 'jsonapi:v1', 'foo', 'bar'], $route->action['middleware']);
     }
 
+    #[DataProvider('routeProvider')]
     /**
      * @param string $method
      * @param string $uri
-     * @dataProvider routeProvider
+     * @param string $action
+     * @param bool $id
      */
-    public function testResourceWithMultipleMiddleware(string $method, string $uri): void
+    public function testResourceWithMultipleMiddleware(string $method, string $uri, string $action, bool $id): void
     {
         $server = $this->createServer('v1');
         $this->createSchema($server, 'posts', '\d+');
@@ -268,12 +279,14 @@ class ResourceTest extends TestCase
         $this->assertSame(['api', 'jsonapi:v1', 'foo', 'bar1', 'bar2'], $route->action['middleware']);
     }
 
+    #[DataProvider('routeProvider')]
     /**
      * @param string $method
      * @param string $uri
-     * @dataProvider routeProvider
+     * @param string $action
+     * @param bool $id
      */
-    public function testResourceMiddlewareArrayList(string $method, string $uri): void
+    public function testResourceMiddlewareArrayList(string $method, string $uri, string $action, bool $id): void
     {
         $server = $this->createServer('v1');
         $this->createSchema($server, 'posts', '\d+');
@@ -293,13 +306,14 @@ class ResourceTest extends TestCase
     }
 
 
+    #[DataProvider('routeProvider')]
     /**
      * @param string $method
      * @param string $uri
      * @param string $action
-     * @dataProvider routeProvider
+     * @param bool $id
      */
-    public function testResourceActionMiddleware(string $method, string $uri, string $action): void
+    public function testResourceActionMiddleware(string $method, string $uri, string $action, bool $id): void
     {
         $actions = [
             '*' => ['bar1', 'bar2'],
@@ -335,12 +349,14 @@ class ResourceTest extends TestCase
         $this->assertSame($expected, $route->action['middleware']);
     }
 
+    #[DataProvider('routeProvider')]
     /**
      * @param string $method
      * @param string $uri
-     * @dataProvider routeProvider
+     * @param string $action
+     * @param bool $id
      */
-    public function testServerDomain(string $method, string $uri): void
+    public function testServerDomain(string $method, string $uri, string $action, bool $id): void
     {
         $server = $this->createServer('v1');
         $this->createSchema($server, 'posts', '\d+');
@@ -359,12 +375,14 @@ class ResourceTest extends TestCase
         $this->assertSame('http://api.example.com', $route->action['domain']);
     }
 
+    #[DataProvider('routeProvider')]
     /**
      * @param string $method
      * @param string $uri
-     * @dataProvider routeProvider
+     * @param string $action
+     * @param bool $id
      */
-    public function testResourceUri(string $method, string $uri): void
+    public function testResourceUri(string $method, string $uri, string $action, bool $id): void
     {
         $server = $this->createServer('v1');
         $this->createSchema($server, 'blog:posts', null, 'posts');
@@ -381,12 +399,12 @@ class ResourceTest extends TestCase
         $this->assertMatch($method, $uri);
     }
 
+    #[DataProvider('routeProvider')]
     /**
      * @param string $method
      * @param string $uri
      * @param string $action
      * @param bool $id
-     * @dataProvider routeProvider
      */
     public function testResourceParameter(string $method, string $uri, string $action, bool $id): void
     {
@@ -449,10 +467,10 @@ class ResourceTest extends TestCase
         ];
     }
 
+    #[DataProvider('onlyProvider')]
     /**
      * @param string|array $only
      * @param array $matches
-     * @dataProvider onlyProvider
      */
     public function testOnly($only, array $matches): void
     {
@@ -510,10 +528,10 @@ class ResourceTest extends TestCase
         ];
     }
 
+    #[DataProvider('exceptProvider')]
     /**
      * @param string|array $except
      * @param array $matches
-     * @dataProvider exceptProvider
      */
     public function testExcept($except, array $matches): void
     {
@@ -567,9 +585,9 @@ class ResourceTest extends TestCase
         ];
     }
 
+    #[DataProvider('resourceMethodProvider')]
     /**
      * @param string $method
-     * @dataProvider resourceMethodProvider
      */
     public function testIdConstraintWorks(string $method): void
     {

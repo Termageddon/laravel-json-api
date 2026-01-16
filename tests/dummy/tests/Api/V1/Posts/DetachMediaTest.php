@@ -17,6 +17,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Video;
 use App\Tests\Api\V1\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class DetachMediaTest extends TestCase
 {
@@ -169,10 +170,10 @@ class DetachMediaTest extends TestCase
         $this->assertDatabaseCount('post_video', $existingVideos->count());
     }
 
+    #[DataProvider('notAcceptableMediaTypeProvider')]
     /**
      * @param string $mediaType
      * @return void
-     * @dataProvider notAcceptableMediaTypeProvider
      */
     public function testNotAcceptableMediaType(string $mediaType): void
     {

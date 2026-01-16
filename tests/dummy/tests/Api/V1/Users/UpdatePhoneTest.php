@@ -15,6 +15,7 @@ use App\Models\Comment;
 use App\Models\Phone;
 use App\Models\User;
 use App\Tests\Api\V1\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class UpdatePhoneTest extends TestCase
 {
@@ -122,10 +123,10 @@ class UpdatePhoneTest extends TestCase
         $this->assertModelExists($existing);
     }
 
+    #[DataProvider('notAcceptableMediaTypeProvider')]
     /**
      * @param string $mediaType
      * @return void
-     * @dataProvider notAcceptableMediaTypeProvider
      */
     public function testNotAcceptableMediaType(string $mediaType): void
     {

@@ -16,6 +16,7 @@ use App\Models\Tag;
 use App\Models\User;
 use App\Models\Video;
 use App\Tests\Api\V1\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ReadTest extends TestCase
 {
@@ -288,10 +289,10 @@ class ReadTest extends TestCase
         ]);
     }
 
+    #[DataProvider('notAcceptableMediaTypeProvider')]
     /**
      * @param string $mediaType
      * @return void
-     * @dataProvider notAcceptableMediaTypeProvider
      */
     public function testNotAcceptableMediaType(string $mediaType): void
     {

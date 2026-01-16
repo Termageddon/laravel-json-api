@@ -15,6 +15,7 @@ use App\Models\Comment;
 use App\Models\Post;
 use App\Tests\Api\V1\TestCase;
 use Illuminate\Support\Arr;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ReadCommentsTest extends TestCase
 {
@@ -131,10 +132,10 @@ class ReadCommentsTest extends TestCase
         );
     }
 
+    #[DataProvider('notAcceptableMediaTypeProvider')]
     /**
      * @param string $mediaType
      * @return void
-     * @dataProvider notAcceptableMediaTypeProvider
      */
     public function testNotAcceptableMediaType(string $mediaType): void
     {

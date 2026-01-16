@@ -21,10 +21,12 @@ use LaravelJsonApi\Contracts\Schema\Schema;
 use LaravelJsonApi\Contracts\Server\Repository;
 use LaravelJsonApi\Contracts\Server\Server;
 use LaravelJsonApi\Laravel\Tests\Integration\TestCase as BaseTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+#[AllowMockObjectsWithoutExpectations]
 class TestCase extends BaseTestCase
 {
 

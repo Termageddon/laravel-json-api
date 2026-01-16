@@ -18,6 +18,7 @@ use App\Tests\Api\V1\TestCase;
 use Faker\Generator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Date;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class IndexTest extends TestCase
 {
@@ -362,10 +363,10 @@ class IndexTest extends TestCase
         $response->assertFetchedManyExact($expected);
     }
 
+    #[DataProvider('notAcceptableMediaTypeProvider')]
     /**
      * @param string $mediaType
      * @return void
-     * @dataProvider notAcceptableMediaTypeProvider
      */
     public function testNotAcceptableMediaType(string $mediaType): void
     {

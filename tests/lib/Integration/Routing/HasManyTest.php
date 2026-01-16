@@ -14,7 +14,10 @@ namespace LaravelJsonApi\Laravel\Tests\Integration\Routing;
 use Illuminate\Contracts\Routing\Registrar;
 use LaravelJsonApi\Core\Support\Arr;
 use LaravelJsonApi\Laravel\Facades\JsonApiRoute;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
 
+#[AllowMockObjectsWithoutExpectations]
 class HasManyTest extends TestCase
 {
 
@@ -57,12 +60,12 @@ class HasManyTest extends TestCase
         ];
     }
 
+    #[DataProvider('genericProvider')]
     /**
      * @param string $method
      * @param string $uri
      * @param string $action
      * @param string $name
-     * @dataProvider genericProvider
      */
     public function test(string $method, string $uri, string $action, string $name): void
     {
@@ -90,13 +93,14 @@ class HasManyTest extends TestCase
     }
 
 
+    #[DataProvider('genericProvider')]
     /**
      * @param string $method
      * @param string $uri
      * @param string $action
-     * @dataProvider genericProvider
+     * @param string $name
      */
-    public function testName(string $method, string $uri, string $action): void
+    public function testName(string $method, string $uri, string $action, string $name): void
     {
         $server = $this->createServer('v1');
         $schema = $this->createSchema($server, 'posts', '\d+');
@@ -118,12 +122,14 @@ class HasManyTest extends TestCase
         $this->assertSame("my-api:posts.foobar.bazbat", $route->getName());
     }
 
+    #[DataProvider('genericProvider')]
     /**
      * @param string $method
      * @param string $uri
-     * @dataProvider genericProvider
+     * @param string $action
+     * @param string $name
      */
-    public function testMiddleware(string $method, string $uri): void
+    public function testMiddleware(string $method, string $uri, string $action, string $name): void
     {
         $server = $this->createServer('v1');
         $schema = $this->createSchema($server, 'posts', '\d+');
@@ -145,12 +151,14 @@ class HasManyTest extends TestCase
         $this->assertSame(['api', 'jsonapi:v1', 'foo', 'bar', 'baz1', 'baz2'], $route->action['middleware']);
     }
 
+    #[DataProvider('genericProvider')]
     /**
      * @param string $method
      * @param string $uri
-     * @dataProvider genericProvider
+     * @param string $action
+     * @param string $name
      */
-    public function testMiddlewareAsArrayList(string $method, string $uri): void
+    public function testMiddlewareAsArrayList(string $method, string $uri, string $action, string $name): void
     {
         $server = $this->createServer('v1');
         $schema = $this->createSchema($server, 'posts', '\d+');
@@ -172,13 +180,14 @@ class HasManyTest extends TestCase
         $this->assertSame(['api', 'jsonapi:v1', 'foo', 'bar', 'baz1', 'baz2'], $route->action['middleware']);
     }
 
+    #[DataProvider('genericProvider')]
     /**
      * @param string $method
      * @param string $uri
      * @param string $action
-     * @dataProvider genericProvider
+     * @param string $name
      */
-    public function testActionMiddleware(string $method, string $uri, string $action): void
+    public function testActionMiddleware(string $method, string $uri, string $action, string $name): void
     {
         $actions = [
             '*' => ['baz1', 'baz2'],
@@ -227,12 +236,14 @@ class HasManyTest extends TestCase
         $this->assertSame($expected, $route->action['middleware']);
     }
 
+    #[DataProvider('genericProvider')]
     /**
      * @param string $method
      * @param string $uri
-     * @dataProvider genericProvider
+     * @param string $action
+     * @param string $name
      */
-    public function testUri(string $method, string $uri): void
+    public function testUri(string $method, string $uri, string $action, string $name): void
     {
         $server = $this->createServer('v1');
         $schema = $this->createSchema($server, 'posts', '\d+');
@@ -305,10 +316,10 @@ class HasManyTest extends TestCase
         ];
     }
 
+    #[DataProvider('onlyProvider')]
     /**
      * @param $only
      * @param array $matches
-     * @dataProvider onlyProvider
      */
     public function testOnly($only, array $matches): void
     {
@@ -384,10 +395,10 @@ class HasManyTest extends TestCase
     }
 
 
+    #[DataProvider('exceptProvider')]
     /**
      * @param $except
      * @param array $matches
-     * @dataProvider exceptProvider
      */
     public function testExcept($except, array $matches): void
     {
@@ -475,12 +486,12 @@ class HasManyTest extends TestCase
         ];
     }
 
+    #[DataProvider('ownActionProvider')]
     /**
      * @param string $method
      * @param string $uri
      * @param string $action
      * @param string $expected
-     * @dataProvider ownActionProvider
      */
     public function testOwnAction(string $method, string $uri, string $action, string $expected): void
     {
@@ -503,12 +514,12 @@ class HasManyTest extends TestCase
         $this->assertSame('tags', $route->parameter('resource_relationship'));
     }
 
+    #[DataProvider('ownActionProvider')]
     /**
      * @param string $method
      * @param string $uri
      * @param string $action
      * @param string $expected
-     * @dataProvider ownActionProvider
      */
     public function testOwnActions(string $method, string $uri, string $action, string $expected): void
     {
@@ -531,12 +542,14 @@ class HasManyTest extends TestCase
         $this->assertSame('tags', $route->parameter('resource_relationship'));
     }
 
+    #[DataProvider('genericProvider')]
     /**
      * @param string $method
      * @param string $uri
-     * @dataProvider genericProvider
+     * @param string $action
+     * @param string $name
      */
-    public function testIdConstraintWorks(string $method, string $uri): void
+    public function testIdConstraintWorks(string $method, string $uri, string $action, string $name): void
     {
         $server = $this->createServer('v1');
         $schema = $this->createSchema($server, 'posts', '\d+');

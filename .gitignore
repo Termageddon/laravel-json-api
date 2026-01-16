@@ -2,3 +2,37 @@
 vendor/
 composer.lock
 .phpunit.cache/
+
+# Scans
+SCAN_REPORT.md
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# IDE and editor configs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Keys and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+
+# Logs
+*.log
+.phpunit-debug.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+/build/
+/dist/
